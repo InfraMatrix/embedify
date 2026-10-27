@@ -1,0 +1,24 @@
+# Copy to embedify.yaml and edit. Defaults shown.
+embedders:
+  text:
+    backend: local            # local | endpoint | hash
+    model: BAAI/bge-small-en-v1.5
+    # Endpoint alternative (Ollama example — no code change needed):
+    # backend: endpoint
+    # base_url: http://localhost:11434/v1
+    # model: nomic-embed-text
+    # api_key_env: null
+  code:
+    backend: local
+    model: BAAI/bge-small-en-v1.5
+
+chunkers:
+  text: {strategy: token, max_tokens: 512, overlap: 64}
+  code: {strategy: ast, max_tokens: 512, overlap: 64}
+
+sink:
+  type: lancedb               # memory | file | lancedb
+  path: ./embedify.lancedb
+  table: chunks
+
+shared_space: false           # opt-in, Phase 3

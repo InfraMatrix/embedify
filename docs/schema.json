@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/InfraMatrix/embedify/schema/embedding-record/1.0",
+  "title": "EmbeddingRecord",
+  "description": "embedify output contract, schema_version 1.0. See docs/schema.md.",
+  "type": "object",
+  "required": ["schema_version", "id", "vector", "model", "model_version", "dim",
+               "modality", "source_uri", "locator", "content_hash", "text_preview",
+               "metadata", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "id": {"type": "string", "description": "uuid5(source_uri + ':' + content_hash), hex"},
+    "vector": {"type": "array", "items": {"type": "number"},
+               "description": "L2-normalized embedding; length == dim"},
+    "model": {"type": "string", "description": "Model id that produced the vector"},
+    "model_version": {"type": "string"},
+    "dim": {"type": "integer", "minimum": 1},
+    "modality": {"type": "string",
+                 "enum": ["text", "code", "document", "tabular", "timeseries",
+                          "image", "audio", "video", "unknown"]},
+    "source_uri": {"type": "string", "description": "File path or URI the unit came from"},
+    "locator": {
+      "type": "object",
+      "description": "Exact source span. Only one family is set per modality.",
+      "properties": {
+        "page": {"type": ["integer", "null"]},
+        "line_start": {"type": ["integer", "null"]},
+        "line_end": {"type": ["integer", "null"]},
+        "char_start": {"type": ["integer", "null"]},
+        "char_end": {"type": ["integer", "null"]},
+        "row_id": {"type": ["string", "null"]},
+        "time_start": {"type": ["string", "null"], "format": "date-time"},
+        "time_end": {"type": ["string", "null"], "format": "date-time"},
+        "frame_ts": {"type": ["number", "null"]}
+      }
+    },
+    "content_hash": {"type": "string", "description": "SHA-256 of the unit content"},
+    "text_preview": {"type": "string", "description": "First 500 chars of the embedded text"},
+    "metadata": {"type": "object", "description": "Modality-specific metadata (see schema.md)"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

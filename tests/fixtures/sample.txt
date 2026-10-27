@@ -1,0 +1,3 @@
+Refunds are issued within thirty days of purchase. Customers can request a refund through the support portal.
+
+Embeddings turn text into vectors. Similar meanings produce similar vectors, which makes search possible.
