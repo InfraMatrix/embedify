@@ -1,0 +1,24 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  unit-tests:
+    # Unit tests only: CPU-only, no model downloads, no GPU, no live
+    # endpoints. Embedders are exercised via the hash backend and fake
+    # modules; real-model smoke tests are run manually, not in CI.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      # Tree-sitter grammars are installed below; a missing grammar must
+      # fail the build, not silently skip (see test_code_chunking.py).
+      EMBEDIFY_REQUIRE_GRAMMARS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[dev,lancedb,pdf,tabular,code]'
+      - run: ruff check src tests
+      - run: mypy src
+      - run: pytest -q

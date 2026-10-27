@@ -1,0 +1,6 @@
+# HELP http_requests_total Total requests
+# TYPE http_requests_total counter
+http_requests_total{method="get"} 10 1704067200000
+http_requests_total{method="get"} 12 1704067260000
+http_requests_total{method="get"} 15 1704067320000
+http_requests_total{method="get"} 19 1704067380000
